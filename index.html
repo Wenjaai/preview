@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wenja.ai — Bald für Sie da</title>
+  <meta name="description" content="Wenja.ai — KI-Lösungen für Ihr Unternehmen. Wir sind bald für Sie da.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0B1320;
+      color: #fff;
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 55% at 50% 50%, rgba(124,58,237,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Nunito', sans-serif;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .logo-wordmark {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 2px;
+    }
+
+    .logo-wenja { font-weight: 800; font-size: 32px; letter-spacing: -0.025em; color: #fff; }
+    .logo-ai    { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; color: rgba(255,255,255,0.7); }
+
+    @keyframes orbitDash {
+      from { stroke-dashoffset: 0; }
+      to   { stroke-dashoffset: -200; }
+    }
+
+    .divider {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, #FF6857, #7C3AED);
+      border-radius: 2px;
+      opacity: 0.7;
+    }
+
+    h1 {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      color: #fff;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.55);
+      max-width: 360px;
+    }
+
+    .email-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 9999px;
+      padding: 10px 22px;
+      transition: all 200ms ease;
+    }
+
+    .email-link:hover {
+      border-color: rgba(255,104,87,0.6);
+      color: #fff;
+      background: rgba(255,104,87,0.08);
+    }
+
+    footer {
+      position: fixed;
+      bottom: 24px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.2);
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <div class="logo">
+      <svg width="52" height="52" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M 27.4 10.5 A 22 22 0 0 1 51.4 42.3"
+          stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.75"
+          style="stroke-dasharray:5 8; animation: orbitDash 20s linear infinite"/>
+        <path d="M 43.7 50.7 A 22 22 0 0 1 12.6 21.7"
+          stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.75"
+          style="stroke-dasharray:5 8; animation: orbitDash 20s linear infinite"/>
+        <text x="32" y="43" text-anchor="middle"
+          font-family="'Nunito', system-ui, sans-serif"
+          font-weight="900" font-size="28" fill="#fff">w</text>
+        <path d="M17 8 L18.5 12 L22.5 13.5 L18.5 15 L17 19 L15.5 15 L11.5 13.5 L15.5 12 Z" fill="#FF6857"/>
+        <circle cx="49" cy="48" r="2.6" fill="#FF6857"/>
+      </svg>
+      <div class="logo-wordmark">
+        <span class="logo-wenja">wenja</span><span class="logo-ai">.ai</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h1>Wir sind bald für Sie da.</h1>
+
+    <p>
+      Wenja.ai bringt KI-Lösungen in Ihr Unternehmen — von der Analyse über Website und Content bis hin zu Automatisierung und digitalen Produkten.
+    </p>
+
+
+  </div>
+
+  <footer>© 2026 Wenja.ai — Alle Rechte vorbehalten</footer>
+
+</body>
+</html>
