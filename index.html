@@ -1,55 +1,222 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wenja.ai — Bald für Sie da</title>
-  <meta name="description" content="Wenja.ai — KI-Lösungen für Ihr Unternehmen. Wir sind bald für Sie da.">
+  <title>Wenja.ai — KI-Beratung für den Mittelstand</title>
+  <meta name="description" content="Wenja.ai — KI-Beratung für den österreichischen Mittelstand. Wir helfen Ihnen, smarter zu arbeiten. Bald verfügbar.">
+  <meta name="theme-color" content="#F4F7FA">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --accent: #FF6857;
+      --accent-dark: #E8502A;
+      --violet: #7C3AED;
+      --radius-btn: 8px;
+      --t-fast: 200ms ease;
+      --t-theme: 320ms ease;
+    }
+
+    /* ===== THEME 1: HELL (Default, McKinsey-Premium) ===== */
+    html[data-theme="light"] {
+      --bg:         #F4F7FA;
+      --bg-card:    #FFFFFF;
+      --text:       #0B1320;
+      --text-muted: #5A6478;
+      --border:     rgba(0,0,0,0.08);
+      --nav-bg:     rgba(244,247,250,0.88);
+      --video-overlay: rgba(244,247,250,0.82);
+      --video-opacity: 0.18;
+      --logo-color: #0B1320;
+      --logo-ai-opacity: 0.85;
+      --btn-bg: var(--accent);
+      --btn-text: #FFFFFF;
+      --btn-border: var(--accent);
+      --tile-bg: rgba(255,255,255,0.6);
+      --tile-border: rgba(0,0,0,0.06);
+    }
+
+    /* ===== THEME 2: DUNKEL (Wenja Deep) ===== */
+    html[data-theme="dark"] {
+      --bg:         #0B1320;
+      --bg-card:    rgba(255,255,255,0.04);
+      --text:       #F0F4FF;
+      --text-muted: rgba(240,244,255,0.60);
+      --border:     rgba(255,255,255,0.08);
+      --nav-bg:     rgba(11,19,32,0.82);
+      --video-overlay: rgba(11,19,32,0.65);
+      --video-opacity: 0.35;
+      --logo-color: #FFFFFF;
+      --logo-ai-opacity: 0.7;
+      --btn-bg: var(--accent);
+      --btn-text: #FFFFFF;
+      --btn-border: var(--accent);
+      --tile-bg: rgba(255,255,255,0.04);
+      --tile-border: rgba(255,255,255,0.08);
+    }
+
+    /* ===== THEME 3: HIGH CONTRAST (Experimentier) ===== */
+    html[data-theme="hc"] {
+      --bg:         #FFFFFF;
+      --bg-card:    #FFFFFF;
+      --text:       #000000;
+      --text-muted: #444444;
+      --border:     #000000;
+      --nav-bg:     rgba(255,255,255,0.95);
+      --video-overlay: rgba(255,255,255,1);
+      --video-opacity: 0;
+      --logo-color: #000000;
+      --logo-ai-opacity: 1;
+      --btn-bg: #000000;
+      --btn-text: #FFFFFF;
+      --btn-border: #000000;
+      --tile-bg: #FFFFFF;
+      --tile-border: #000000;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100svh;
+      overflow-x: hidden;
+    }
+
     body {
-      background: #0B1320;
-      color: #fff;
-      font-family: 'Inter', system-ui, sans-serif;
-      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-weight: 400;
+      line-height: 1.5;
+      min-height: 100svh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 24px;
-      text-align: center;
+      padding: 40px 24px 80px;
+      position: relative;
+      transition: background-color var(--t-theme), color var(--t-theme);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    body::before {
-      content: '';
+    /* ===== VIDEO BACKGROUND ===== */
+    #bg-video {
       position: fixed;
       inset: 0;
-      background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
-      background-size: 32px 32px;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -3;
+      opacity: var(--video-opacity);
+      transition: opacity var(--t-theme);
       pointer-events: none;
     }
 
-    body::after {
-      content: '';
+    html[data-theme="hc"] #bg-video { display: none; }
+
+    /* Overlay over video for legibility */
+    #bg-overlay {
       position: fixed;
       inset: 0;
-      background: radial-gradient(ellipse 60% 55% at 50% 50%, rgba(124,58,237,0.12) 0%, transparent 70%);
+      background: var(--video-overlay);
+      z-index: -2;
+      transition: background-color var(--t-theme);
       pointer-events: none;
     }
 
-    .card {
+    html[data-theme="hc"] #bg-overlay { background: #FFFFFF; }
+
+    /* ===== CANVAS PARTICLE FALLBACK ===== */
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 600ms ease;
+    }
+
+    #particle-canvas.active { opacity: 1; }
+    html[data-theme="hc"] #particle-canvas { display: none; }
+
+    /* ===== THEME SWITCHER ===== */
+    .theme-switch {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: inline-flex;
+      gap: 4px;
+      padding: 6px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      z-index: 10;
+      transition: background-color var(--t-theme), border-color var(--t-theme);
+    }
+
+    html[data-theme="hc"] .theme-switch {
+      border: 2px solid #000;
+      backdrop-filter: none;
+    }
+
+    .theme-btn {
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color var(--t-fast), background var(--t-fast), border-color var(--t-fast);
+      padding: 0;
+    }
+
+    .theme-btn:hover {
+      color: var(--text);
+      background: var(--border);
+    }
+
+    .theme-btn.active {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    html[data-theme="hc"] .theme-btn.active {
+      color: #000;
+      border: 2px solid var(--accent);
+      background: rgba(255,104,87,0.08);
+    }
+
+    .theme-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2;
+    }
+
+    /* ===== HERO CONTENT ===== */
+    .hero {
       position: relative;
       z-index: 1;
-      max-width: 480px;
+      max-width: 640px;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 28px;
-      animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) both;
+      text-align: center;
+      gap: 32px;
+      animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) both;
     }
 
     @keyframes fadeUp {
@@ -57,14 +224,19 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* ===== LOGO ===== */
     .logo {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       font-family: 'Nunito', sans-serif;
       line-height: 1;
       user-select: none;
+      animation-delay: 0s;
     }
+
+    .logo svg .ring-stroke { stroke: var(--logo-color); }
+    .logo svg .letter-w { fill: var(--logo-color); }
 
     .logo-wordmark {
       display: inline-flex;
@@ -72,86 +244,264 @@
       gap: 2px;
     }
 
-    .logo-wenja { font-weight: 800; font-size: 32px; letter-spacing: -0.025em; color: #fff; }
-    .logo-ai    { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; color: rgba(255,255,255,0.7); }
+    .logo-wenja {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 40px;
+      letter-spacing: -0.025em;
+      color: var(--logo-color);
+      transition: color var(--t-theme);
+    }
+
+    .logo-ai {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 30px;
+      letter-spacing: -0.01em;
+      color: var(--logo-color);
+      opacity: var(--logo-ai-opacity);
+      transition: color var(--t-theme), opacity var(--t-theme);
+    }
 
     @keyframes orbitDash {
       from { stroke-dashoffset: 0; }
       to   { stroke-dashoffset: -200; }
     }
 
+    .logo svg path[data-orbit] {
+      stroke-dasharray: 5 8;
+      animation: orbitDash 20s linear infinite;
+    }
+
+    /* ===== DIVIDER ===== */
     .divider {
       width: 48px;
       height: 2px;
-      background: linear-gradient(90deg, #FF6857, #7C3AED);
+      background: linear-gradient(90deg, #FF6857 0%, #7C3AED 100%);
       border-radius: 2px;
       opacity: 0.7;
     }
 
+    html[data-theme="hc"] .divider {
+      background: #000;
+      opacity: 1;
+      width: 64px;
+      height: 3px;
+    }
+
+    /* ===== HEADLINE ===== */
     h1 {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(26px, 5vw, 38px);
+      font-family: 'Plus Jakarta Sans', 'Nunito', sans-serif;
+      font-size: clamp(32px, 5.6vw, 52px);
       font-weight: 800;
-      letter-spacing: -0.025em;
-      line-height: 1.2;
-      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--text);
+      transition: color var(--t-theme);
+      max-width: 580px;
     }
 
-    p {
+    .subline {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(16px, 1.8vw, 18px);
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 520px;
+      transition: color var(--t-theme);
+    }
+
+    .subline strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ===== CTA BUTTON ===== */
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      font-family: 'Inter', sans-serif;
       font-size: 16px;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.55);
-      max-width: 360px;
+      font-weight: 600;
+      color: var(--btn-text);
+      background: var(--btn-bg);
+      border: 1.5px solid var(--btn-border);
+      border-radius: var(--radius-btn);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform var(--t-fast), filter var(--t-fast), background var(--t-fast);
+      margin-top: 4px;
     }
 
-    .email-link {
+    .cta:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.06);
+    }
+
+    .cta:active { transform: translateY(0); }
+
+    html[data-theme="hc"] .cta {
+      border: 2px solid #000;
+    }
+
+    html[data-theme="hc"] .cta:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .cta .arrow {
+      transition: transform var(--t-fast);
+    }
+
+    .cta:hover .arrow { transform: translateX(3px); }
+
+    /* ===== SOFT INFO LINE ===== */
+    .softline {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 15px;
+      margin-top: 4px;
+      padding: 6px 14px;
+      font-size: 13px;
       font-weight: 500;
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text-muted);
+      background: var(--tile-bg);
+      border: 1px solid var(--tile-border);
       border-radius: 9999px;
-      padding: 10px 22px;
-      transition: all 200ms ease;
+      transition: all var(--t-theme);
     }
 
-    .email-link:hover {
-      border-color: rgba(255,104,87,0.6);
-      color: #fff;
-      background: rgba(255,104,87,0.08);
+    html[data-theme="hc"] .softline {
+      border: 2px solid #000;
+      color: #000;
     }
 
+    .softline-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* ===== FOOTER ===== */
     footer {
       position: fixed;
-      bottom: 24px;
+      bottom: 18px;
       left: 0;
       right: 0;
       text-align: center;
-      font-size: 13px;
-      color: rgba(255,255,255,0.2);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+      opacity: 0.75;
+      letter-spacing: 0.02em;
       z-index: 1;
+      pointer-events: none;
     }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      body { padding: 80px 20px 70px; }
+      .hero { gap: 24px; }
+      .theme-switch {
+        top: 14px;
+        right: 14px;
+        padding: 4px;
+      }
+      .theme-btn { width: 34px; height: 34px; }
+      .logo { gap: 10px; }
+      .logo svg { width: 48px; height: 48px; }
+      .logo-wenja { font-size: 32px; }
+      .logo-ai { font-size: 24px; }
+      .cta { padding: 13px 24px; font-size: 15px; }
+    }
+
+    @media (max-width: 380px) {
+      h1 { font-size: 28px; }
+      .subline { font-size: 15px; }
+    }
+
+    /* ===== REDUCED MOTION ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+      .hero { animation: none; opacity: 1; transform: none; }
+      .softline-dot { animation: none; }
+      .logo svg path[data-orbit] { animation: none; }
+    }
+
+    /* ===== SELECTION ===== */
+    ::selection { background: #FF6857; color: #fff; }
   </style>
 </head>
 <body>
 
-  <div class="card">
+  <!-- Video Background -->
+  <video id="bg-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+    <source src="abstract-network.mp4" type="video/mp4">
+  </video>
 
-    <div class="logo">
-      <svg width="52" height="52" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <!-- Overlay for legibility -->
+  <div id="bg-overlay"></div>
+
+  <!-- Canvas Particle Fallback -->
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+  <!-- Theme Switcher -->
+  <nav class="theme-switch" role="group" aria-label="Farbschema wählen">
+    <button class="theme-btn" data-theme-set="light" aria-label="Helles Theme" title="Hell">
+      <!-- Sun icon -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+      </svg>
+    </button>
+    <button class="theme-btn" data-theme-set="dark" aria-label="Dunkles Theme" title="Dunkel">
+      <!-- Moon icon -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <button class="theme-btn" data-theme-set="hc" aria-label="High Contrast (Experimentier)" title="High Contrast">
+      <!-- Sparkle/Experiment icon -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/>
+        <path d="M19 17v4M17 19h4"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Hero Content -->
+  <main class="hero">
+
+    <div class="logo" role="img" aria-label="Wenja.ai">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Orbit Ring (zwei Bögen mit zwei Unterbrechungen) -->
         <path d="M 27.4 10.5 A 22 22 0 0 1 51.4 42.3"
-          stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.75"
-          style="stroke-dasharray:5 8; animation: orbitDash 20s linear infinite"/>
+          class="ring-stroke" data-orbit
+          stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.75"/>
         <path d="M 43.7 50.7 A 22 22 0 0 1 12.6 21.7"
-          stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.75"
-          style="stroke-dasharray:5 8; animation: orbitDash 20s linear infinite"/>
+          class="ring-stroke" data-orbit
+          stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.75"/>
+        <!-- "w" Letter -->
         <text x="32" y="43" text-anchor="middle"
+          class="letter-w"
           font-family="'Nunito', system-ui, sans-serif"
-          font-weight="900" font-size="28" fill="#fff">w</text>
+          font-weight="900" font-size="28">w</text>
+        <!-- Sparkle (oben-links Gap) -->
         <path d="M17 8 L18.5 12 L22.5 13.5 L18.5 15 L17 19 L15.5 15 L11.5 13.5 L15.5 12 Z" fill="#FF6857"/>
+        <!-- Dot (unten-rechts Gap) -->
         <circle cx="49" cy="48" r="2.6" fill="#FF6857"/>
       </svg>
       <div class="logo-wordmark">
@@ -159,18 +509,206 @@
       </div>
     </div>
 
-    <div class="divider"></div>
+    <div class="divider" aria-hidden="true"></div>
 
     <h1>Wir sind bald für Sie da.</h1>
 
-    <p>
+    <p class="subline">
       Wenja.ai bringt KI-Lösungen in Ihr Unternehmen — von der Analyse über Website und Content bis hin zu Automatisierung und digitalen Produkten.
     </p>
 
+    <a class="cta" href="mailto:hello@wenja.ai?subject=Kontaktanfrage%20Wenja.ai">
+      Jetzt Kontakt aufnehmen
+      <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h14M13 6l6 6-6 6"/>
+      </svg>
+    </a>
 
-  </div>
+    <div class="softline" aria-label="Wenja.ai — bald verfügbar">
+      <span class="softline-dot" aria-hidden="true"></span>
+      Wenja.ai — bald verfügbar
+    </div>
 
-  <footer>© 2026 Wenja.ai — Alle Rechte vorbehalten</footer>
+  </main>
+
+  <footer>&copy; 2026 Wenja.ai &middot; KI-Beratung &middot; Wien, Österreich</footer>
+
+  <script>
+    /* ===== THEME SWITCHING ===== */
+    (function() {
+      const root = document.documentElement;
+      const buttons = document.querySelectorAll('.theme-btn');
+      const video = document.getElementById('bg-video');
+      const VALID = ['light', 'dark', 'hc'];
+
+      function setTheme(t) {
+        if (!VALID.includes(t)) t = 'light';
+        root.setAttribute('data-theme', t);
+        try { localStorage.setItem('wenja-theme', t); } catch (e) { /* ignore */ }
+
+        buttons.forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.themeSet === t);
+          btn.setAttribute('aria-pressed', btn.dataset.themeSet === t ? 'true' : 'false');
+        });
+
+        // Theme-color meta für Browser-UI
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) {
+          meta.setAttribute('content',
+            t === 'dark' ? '#0B1320' :
+            t === 'hc'   ? '#FFFFFF' :
+                           '#F4F7FA'
+          );
+        }
+      }
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => setTheme(btn.dataset.themeSet));
+      });
+
+      // Restore saved theme
+      let saved = 'light';
+      try { saved = localStorage.getItem('wenja-theme') || 'light'; } catch (e) { /* ignore */ }
+      setTheme(saved);
+    })();
+
+    /* ===== VIDEO FALLBACK DETECTION + PARTICLE CANVAS ===== */
+    (function() {
+      const video = document.getElementById('bg-video');
+      const canvas = document.getElementById('particle-canvas');
+      const ctx = canvas.getContext('2d');
+      let videoLoaded = false;
+      let particleAnimId = null;
+
+      function activateFallback() {
+        if (canvas.classList.contains('active')) return;
+        canvas.classList.add('active');
+        if (video) { video.style.display = 'none'; }
+        startParticles();
+      }
+
+      // Detect if video can play
+      if (video) {
+        video.addEventListener('loadeddata', () => { videoLoaded = true; });
+        video.addEventListener('error', activateFallback);
+
+        // If after 3s the video hasn't loaded, fallback
+        setTimeout(() => {
+          if (!videoLoaded || video.readyState < 2) {
+            activateFallback();
+          }
+        }, 3000);
+      } else {
+        activateFallback();
+      }
+
+      /* ===== PARTICLE ANIMATION ===== */
+      let particles = [];
+      const PARTICLE_COUNT = 60;
+      const MAX_DIST = 120;
+
+      function resize() {
+        canvas.width = window.innerWidth * (window.devicePixelRatio || 1);
+        canvas.height = window.innerHeight * (window.devicePixelRatio || 1);
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+      }
+
+      function initParticles() {
+        particles = [];
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          particles.push({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            vx: (Math.random() - 0.5) * 0.35,
+            vy: (Math.random() - 0.5) * 0.35,
+            r: Math.random() * 1.6 + 0.6
+          });
+        }
+      }
+
+      function step() {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        // Move + draw particles
+        for (let p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0) p.x = window.innerWidth;
+          if (p.x > window.innerWidth) p.x = 0;
+          if (p.y < 0) p.y = window.innerHeight;
+          if (p.y > window.innerHeight) p.y = 0;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255,104,87,0.45)';
+          ctx.fill();
+        }
+
+        // Connecting lines
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < MAX_DIST) {
+              const alpha = (1 - dist / MAX_DIST) * 0.25;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = 'rgba(255,104,87,' + alpha + ')';
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          }
+        }
+
+        particleAnimId = requestAnimationFrame(step);
+      }
+
+      function startParticles() {
+        // Respect reduced motion
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          // Static particles only
+          resize();
+          initParticles();
+          // Draw once
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+          for (let p of particles) {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,104,87,0.3)';
+            ctx.fill();
+          }
+          return;
+        }
+
+        resize();
+        initParticles();
+        if (particleAnimId) cancelAnimationFrame(particleAnimId);
+        step();
+      }
+
+      window.addEventListener('resize', () => {
+        if (canvas.classList.contains('active')) {
+          resize();
+          initParticles();
+        }
+      });
+
+      // Pause particles when tab is hidden
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && particleAnimId) {
+          cancelAnimationFrame(particleAnimId);
+          particleAnimId = null;
+        } else if (!document.hidden && canvas.classList.contains('active') && !particleAnimId) {
+          step();
+        }
+      });
+    })();
+  </script>
 
 </body>
 </html>
